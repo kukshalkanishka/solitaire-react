@@ -16,7 +16,13 @@ const deckGenerator = function() {
         hexString = (cardNum + 1).toString(16);
       }
       deck.push(
-        new Card(suite.suit, suite.color, cardNum, suite.unicode + hexString)
+        new Card(
+          suite.suit,
+          suite.color,
+          cardNum,
+          suite.unicode + hexString,
+          suitNum + "_" + cardNum
+        )
       );
     }
   }
