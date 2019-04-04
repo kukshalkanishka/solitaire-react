@@ -3,7 +3,7 @@ import "./cardStyle.css";
 import "./pilesStyle.css";
 import deckGenerator from "./deckGenerator";
 import { shuffle } from "lodash";
-import Piles from "./Piles";
+import PilesView from "./PilesView";
 
 class Game extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class Game extends React.Component {
   render() {
     return (
       <div className="piles">
-        <Piles deck={this.deck} />
+        <PilesView deck={this.deck} />
       </div>
     );
   }
