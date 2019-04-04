@@ -1,6 +1,7 @@
 import React from "react";
 import { flattenDeep, remove } from "lodash";
 import Piles from "./Piles";
+import CardView from "./CardView";
 import "./pilesStyle.css";
 
 class PilesView extends React.Component {
@@ -56,22 +57,6 @@ class PilesView extends React.Component {
     ev.dataTransfer.setData("id", ev.target.id);
   }
 
-  getCardView(card, isDraggable) {
-    return (
-      <div
-        dangerouslySetInnerHTML={{
-          __html: `${card.unicode}`
-        }}
-        className="card"
-        draggable="true"
-        onDragStart={this.drag.bind(this)}
-        id={card.id}
-        key={card.id}
-        style={{ color: `${card.color}` }}
-      />
-    );
-  }
-
   render() {
     this.piles.setInitialOpenCards();
     let pilesView = [];
@@ -80,10 +65,9 @@ class PilesView extends React.Component {
       let cardsInPile = this.state.piles[pileNum].length;
       for (let cardNum = 0; cardNum < cardsInPile; cardNum++) {
         let card = this.state.piles[pileNum][cardNum];
-        let cardJSX = this.getCardView(card);
-        if (card.isOpen) {
-          pileView.push(cardJSX);
-        }
+
+        let cardJSX = <CardView card={card} />;
+        pileView.push(cardJSX);
       }
       pilesView.push(this.getPileView(pileView, pileNum));
     }

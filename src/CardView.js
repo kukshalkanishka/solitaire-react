@@ -10,38 +10,39 @@ class CardView extends React.Component {
     ev.dataTransfer.setData("id", ev.target.id);
   }
 
-  render() {
+  getOpenCardView(card) {
     return (
       <div
         dangerouslySetInnerHTML={{
-          __html: `${this.state.card.unicode}`
+          __html: `${card.unicode}`
         }}
         className="card"
         draggable="true"
         onDragStart={this.drag.bind(this)}
-        id={this.state.card.id}
-        key={this.state.card.id}
-        style={{ color: `${this.state.card.color}` }}
+        id={card.id}
+        key={card.id}
+        style={{ color: `${card.color}` }}
       />
     );
+  }
+
+  getClosedCardView() {
+    return (
+      <div
+        dangerouslySetInnerHTML={{
+          __html: "&#x1F0A0"
+        }}
+        className="card"
+      />
+    );
+  }
+
+  render() {
+    if (this.state.card.isOpen) {
+      return this.getOpenCardView(this.state.card);
+    }
+    return this.getClosedCardView();
   }
 }
 
 export default CardView;
-
-
-// drop(pileNum, ev) {
-//   ev.preventDefault();
-//   let id = ev.dataTransfer.getData("id");
-//   let dragStartPile = this.state.piles[id];
-//   let droppedCard = dragStartPile[dragStartPile.length - 1];
-//   let targetPile = this.state.piles[pileNum];
-//   let lastCardOnPile = targetPile[targetPile.length - 1];
-//   let isCardPlayable = droppedCard.canPlayOnTopOf(lastCardOnPile);
-//   if (isCardPlayable) {
-//     this.piles.removeCard(droppedCard.id);
-//     this.piles.addCard(pileNum, droppedCard);
-
-//     this.setState({ piles: this.piles.getPiles() });
-//   }
-// }
