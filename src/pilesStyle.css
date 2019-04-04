@@ -1,3 +1,10 @@
 .piles {
   display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+}
+.pile {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
 }

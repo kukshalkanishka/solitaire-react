@@ -15,8 +15,8 @@ class Piles {
     return piles;
   }
 
-  addCard(pileNum, card) {
-    this.piles[pileNum].push(card);
+  addCard(pileNum, removedCards) {
+    this.piles[pileNum] = this.piles[pileNum].concat(removedCards);
   }
 
   getPiles() {
@@ -27,15 +27,17 @@ class Piles {
     for (let pileNum = 0; pileNum < 7; pileNum++) {
       let pile = this.piles[pileNum];
       let lastCardOnPile = pile[pile.length - 1];
-      if (lastCardOnPile) lastCardOnPile.setIsOpen();
+      if (lastCardOnPile) {
+        lastCardOnPile.setIsOpen();
+      }
     }
   }
-  removeCard(id) {
-    this.piles.forEach(pile =>
-      remove(pile, function(card) {
-        return card.id == id;
-      })
+  removeCard(cardId) {
+    let requiredPile = this.piles.find(pile =>
+      pile.find(card => card.id == cardId)
     );
+    let cardIndex = requiredPile.findIndex(card => card.id == cardId);
+    return requiredPile.splice(cardIndex);
   }
 }
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { flattenDeep, remove } from "lodash";
 import Piles from "./Piles";
+import "./pilesStyle.css";
 
 class PilesView extends React.Component {
   constructor(props) {
@@ -9,7 +10,53 @@ class PilesView extends React.Component {
     this.state = { piles: this.piles.getPiles() };
   }
 
-  getCardJSX(card) {
+  getCard(id) {
+    let flatStack = flattenDeep(this.state.piles);
+    let card = flatStack.filter(card => card.id == id);
+    return card[0];
+  }
+
+  updatePiles(draggedCardId, targetPileNum) {
+    let removedCards = this.piles.removeCard(draggedCardId);
+    this.piles.addCard(targetPileNum, removedCards);
+
+    this.setState({ piles: this.piles.getPiles() });
+  }
+
+  drop(targetPileNum, ev) {
+    ev.preventDefault();
+    let draggedCardId = ev.dataTransfer.getData("id");
+    let targetPile = this.state.piles[targetPileNum];
+    let lastCardOnPile = targetPile[targetPile.length - 1];
+    let isCardPlayable = this.getCard(draggedCardId).canPlayOnTopOf(
+      lastCardOnPile
+    );
+    if (isCardPlayable) this.updatePiles(draggedCardId, targetPileNum);
+  }
+
+  allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  getPileView(pileView, pileNum) {
+    return (
+      <div
+        key={pileNum}
+        id={pileNum}
+        onDrop={this.drop.bind(this, pileNum)}
+        onDragOver={this.allowDrop.bind(this)}
+        className="pile"
+      >
+        {pileView}
+      </div>
+    );
+  }
+
+  drag(ev) {
+    ev.dataTransfer.setData("id", ev.target.id);
+  }
+
+  getCardView(card, isDraggable) {
     return (
       <div
         dangerouslySetInnerHTML={{
@@ -25,48 +72,6 @@ class PilesView extends React.Component {
     );
   }
 
-  getCard(id) {
-    let flatStack = flattenDeep(this.state.piles);
-    let card = flatStack.filter(card => card.id == id);
-    return card[0];
-  }
-
-  drag(ev) {
-    ev.dataTransfer.setData("id", ev.target.id);
-  }
-
-  drop(pileNum, ev) {
-    ev.preventDefault();
-    let id = ev.dataTransfer.getData("id");
-    let pile = this.state.piles[pileNum];
-    let lastCardOnPile = pile[pile.length - 1];
-    let isPlayable = this.getCard(id).canPlayOnTopOf(lastCardOnPile);
-    if (isPlayable) {
-      let draggedCard = this.getCard(id);
-      this.piles.removeCard(id);
-      this.piles.addCard(pileNum, draggedCard);
-
-      this.setState({ piles: this.piles.getPiles() });
-    }
-  }
-
-  allowDrop(ev) {
-    ev.preventDefault();
-  }
-
-  getPileView(pileJSX, pileNum) {
-    return (
-      <div
-        key={pileNum}
-        id={pileNum}
-        onDrop={this.drop.bind(this, pileNum)}
-        onDragOver={this.allowDrop.bind(this)}
-      >
-        {pileJSX}
-      </div>
-    );
-  }
-
   render() {
     this.piles.setInitialOpenCards();
     let pilesView = [];
@@ -75,7 +80,7 @@ class PilesView extends React.Component {
       let cardsInPile = this.state.piles[pileNum].length;
       for (let cardNum = 0; cardNum < cardsInPile; cardNum++) {
         let card = this.state.piles[pileNum][cardNum];
-        let cardJSX = this.getCardJSX(card);
+        let cardJSX = this.getCardView(card);
         if (card.isOpen) {
           pileView.push(cardJSX);
         }
