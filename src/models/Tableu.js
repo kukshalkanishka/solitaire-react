@@ -1,4 +1,4 @@
-import { flattenDeep } from "lodash";
+import { flattenDeep, last } from "lodash";
 
 class Tableu {
   constructor(pilesCards) {
@@ -25,6 +25,11 @@ class Tableu {
 
   getPiles() {
     return this.piles;
+  }
+
+  isCardPlayable(draggedCard, targetPileNum) {
+    let lastCardOnPile = last(this.piles[targetPileNum]);
+    return draggedCard.canPlayOnTopOf(lastCardOnPile);
   }
 
   setInitialOpenCards() {

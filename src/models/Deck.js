@@ -30,6 +30,16 @@ class Deck {
     return this.foundations.getFoundations();
   }
 
+  isCardPlayable(draggedCard, targetPileNum) {
+    if (targetPileNum.toString().startsWith("_")) {
+      return this.foundations.isCardPlayable(
+        draggedCard,
+        targetPileNum.slice(1)
+      );
+    }
+    return this.tableu.isCardPlayable(draggedCard, targetPileNum);
+  }
+
   getCard(id) {
     let card = this.tableu.getCard(id);
     if (!card) {
@@ -51,6 +61,10 @@ class Deck {
   }
 
   addCards(targetPileNum, cards) {
+    if (targetPileNum.toString().startsWith("_")) {
+      this.foundations.addCards(targetPileNum.slice(1), cards);
+      return;
+    }
     this.tableu.addCards(targetPileNum, cards);
   }
 }

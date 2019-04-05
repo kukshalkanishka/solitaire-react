@@ -6,11 +6,15 @@ import CardView from "./CardView";
 import Card from "./models/Card";
 
 class FoundationView extends React.Component {
+  allowDrop(ev) {
+    ev.preventDefault();
+  }
+
   render() {
-    console.log(this.props.lastCard);
     return (
       <div
         onDrop={this.props.drop.bind(null, "_" + this.props.pileNum)}
+        onDragOver={this.allowDrop.bind(this)}
         id={"_" + this.props.pileNum}
       >
         <CardView card={this.props.lastCard} />

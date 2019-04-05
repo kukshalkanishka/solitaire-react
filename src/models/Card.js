@@ -15,6 +15,13 @@ class Card {
     return this.cardNum == 13;
   }
 
+  canPlayBelow(card) {
+    if (card) {
+      return card.color == this.color && this.cardNum - 1 == card.cardNum;
+    }
+    return this.cardNum == 1;
+  }
+
   setIsOpen() {
     this.isOpen = true;
   }

@@ -31,18 +31,23 @@ class GameView extends React.Component {
   updatePiles(draggedCardId, targetPileNum) {
     let removedCards = this.deck.removeCard(draggedCardId);
     this.deck.addCards(targetPileNum, removedCards);
+    this.setState(state => {
+      state.piles = state.piles;
+      return state;
+    });
+  }
 
-    this.setState({ piles: this.state.piles });
+  isCardPlayable(draggedCardId, targetPileNum) {
+    let draggedCard = this.deck.getCard(draggedCardId);
+    console.log(draggedCard);
+    return this.deck.isCardPlayable(draggedCard, targetPileNum);
   }
 
   drop(targetPileNum, ev) {
     ev.preventDefault();
     let draggedCardId = ev.dataTransfer.getData("id");
-    let targetPile = this.state.piles[targetPileNum];
-    let lastCardOnPile = targetPile[targetPile.length - 1];
-    let draggedCard = this.deck.getCard(draggedCardId);
-    let isCardPlayable = draggedCard.canPlayOnTopOf(lastCardOnPile);
-    if (isCardPlayable) this.updatePiles(draggedCardId, targetPileNum);
+    if (this.isCardPlayable(draggedCardId, targetPileNum))
+      this.updatePiles(draggedCardId, targetPileNum);
   }
 
   render() {

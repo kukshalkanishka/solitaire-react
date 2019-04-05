@@ -19,12 +19,37 @@ class Foundations {
     return this.openPile;
   }
 
-  getCard(id) {
+  getCardFromOpenPile(id) {
     return this.openPile.find(card => card.id == id);
   }
 
+  getCardFromFoundation(id) {
+    let requiredPile = this.foundations.find(pile =>
+      pile.find(card => card.id == id)
+    );
+    return last(requiredPile);
+  }
+
+  getCard(id) {
+    let card = this.getCardFromOpenPile(id);
+    if (!card) {
+      card = this.getCardFromFoundation(id);
+    }
+    return card;
+  }
+
+  addCards(pileNum, removedCards) {
+    this.foundations[pileNum] = this.foundations[pileNum].concat(removedCards);
+  }
+
   removeCard(draggedCardId) {
-    let removedCards = [this.openPile.find(card => card.id == draggedCardId)];
+    let removedCards = this.getCardFromOpenPile(draggedCardId);
+    if (!removedCards) {
+      removedCards = this.getCardFromFoundation(draggedCardId);
+      this.foundations.forEach(pile =>
+        remove(pile, card => card.id == draggedCardId)
+      );
+    }
     remove(this.openPile, card => card.id == draggedCardId);
     return removedCards;
   }
@@ -39,6 +64,11 @@ class Foundations {
     card.setIsOpen();
     this.openPile.push(card);
     this.wastePile.pop();
+  }
+
+  isCardPlayable(draggedCard, targetPileNum) {
+    let lastCardOfPile = last(this.foundations[targetPileNum]);
+    return draggedCard.canPlayBelow(lastCardOfPile);
   }
 }
 
