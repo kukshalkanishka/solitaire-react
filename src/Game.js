@@ -28,14 +28,8 @@ class Game extends React.Component {
     });
   }
 
-  getCard(id) {
-    let flatStack = flattenDeep(this.state.piles);
-    let card = flatStack.filter(card => card.id == id);
-    return card[0];
-  }
-
   updatePiles(draggedCardId, targetPileNum) {
-    let removedCards = this.tableu.removeCard(draggedCardId);
+    let removedCards = this.deck.removeCard(draggedCardId);
     this.tableu.addCard(targetPileNum, removedCards);
 
     this.setState({ piles: this.state.piles });
@@ -46,9 +40,8 @@ class Game extends React.Component {
     let draggedCardId = ev.dataTransfer.getData("id");
     let targetPile = this.state.piles[targetPileNum];
     let lastCardOnPile = targetPile[targetPile.length - 1];
-    let isCardPlayable = this.getCard(draggedCardId).canPlayOnTopOf(
-      lastCardOnPile
-    );
+    let draggedCard = this.deck.getCard(draggedCardId);
+    let isCardPlayable = draggedCard.canPlayOnTopOf(lastCardOnPile);
     if (isCardPlayable) this.updatePiles(draggedCardId, targetPileNum);
   }
 

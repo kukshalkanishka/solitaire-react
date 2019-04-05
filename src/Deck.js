@@ -1,5 +1,5 @@
 import deckGenerator from "./deckGenerator";
-import { shuffle, last, flattenDeep } from "lodash";
+import { shuffle, last, flattenDeep, remove } from "lodash";
 import Tableu from "./Tableu";
 
 class Deck {
@@ -10,10 +10,22 @@ class Deck {
     this.openPile = [];
   }
 
-  removeCardFromOpenPile(draggedCardId) {
-    let draggedCard = this.openPile.find(card => card.id == draggedCardId);
-    this.openPile.remove(card => card.id == draggedCardId);
-    return draggedCard;
+  getCard(id) {
+    let flatStack = flattenDeep(this.tableu.getPiles());
+    let card = flatStack.find(card => card.id == id);
+    if (!card) {
+      card = this.openPile.find(card => card.id == id);
+    }
+    return card;
+  }
+
+  removeCard(draggedCardId) {
+    let removedCards = this.tableu.removeCard(draggedCardId);
+    if (removedCards.length == 0) {
+      removedCards = [this.openPile.find(card => card.id == draggedCardId)];
+      remove(this.openPile, card => card.id == draggedCardId);
+    }
+    return removedCards;
   }
 
   getTableu() {
@@ -26,15 +38,6 @@ class Deck {
 
   getOpenPile() {
     return this.openPile;
-  }
-
-  getCard(id) {
-    let flatStack = flattenDeep(this.piles);
-    let card = flatStack.find(card => card.id == id);
-    if (!card) {
-      card = this.openPile.find(card => card.id == id);
-    }
-    return card;
   }
 
   openWastePileCard() {
