@@ -1,5 +1,3 @@
-import { remove } from "lodash";
-
 class Piles {
   constructor(deck) {
     this.deck = deck;

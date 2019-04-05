@@ -1,9 +1,10 @@
 import React from "react";
+import "./game.css";
 
 class CardView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { card: this.props.card };
+    this.state = { card: this.props.card, margin: this.props.cardNum * 70 };
   }
 
   drag(ev) {
@@ -21,7 +22,10 @@ class CardView extends React.Component {
         onDragStart={this.drag.bind(this)}
         id={card.id}
         key={card.id}
-        style={{ color: `${card.color}` }}
+        style={{
+          color: `${card.color}`,
+          "margin-top": `${this.state.margin}px`
+        }}
       />
     );
   }
@@ -33,6 +37,9 @@ class CardView extends React.Component {
           __html: "&#x1F0A0"
         }}
         className="card"
+        style={{
+          "margin-top": `${this.state.margin}px`
+        }}
       />
     );
   }

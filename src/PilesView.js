@@ -2,7 +2,7 @@ import React from "react";
 import { flattenDeep, remove } from "lodash";
 import Piles from "./Piles";
 import CardView from "./CardView";
-import "./pilesStyle.css";
+import "./game.css";
 
 class PilesView extends React.Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class PilesView extends React.Component {
     ev.preventDefault();
   }
 
-  getPileView(pileView, pileNum) {
+  getPileView(cardsView, pileNum) {
     return (
       <div
         key={pileNum}
@@ -48,7 +48,7 @@ class PilesView extends React.Component {
         onDragOver={this.allowDrop.bind(this)}
         className="pile"
       >
-        {pileView}
+        {cardsView}
       </div>
     );
   }
@@ -59,19 +59,12 @@ class PilesView extends React.Component {
 
   render() {
     this.piles.setInitialOpenCards();
-    let pilesView = [];
-    for (let pileNum = 0; pileNum < 7; pileNum++) {
-      let pileView = [];
-      let cardsInPile = this.state.piles[pileNum].length;
-      for (let cardNum = 0; cardNum < cardsInPile; cardNum++) {
-        let card = this.state.piles[pileNum][cardNum];
-
-        let cardJSX = <CardView card={card} />;
-        pileView.push(cardJSX);
-      }
-      pilesView.push(this.getPileView(pileView, pileNum));
-    }
-    return pilesView;
+    return this.state.piles.map((pile, pileNum) => {
+      let cardsView = pile.map((card, cardNum) => {
+        return <CardView card={card} cardNum={cardNum} />;
+      });
+      return this.getPileView(cardsView, pileNum);
+    });
   }
 }
 
