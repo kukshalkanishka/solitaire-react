@@ -4,7 +4,6 @@ import "./game.css";
 class CardView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { card: this.props.card };
   }
 
   drag(ev) {
@@ -41,8 +40,8 @@ class CardView extends React.Component {
   }
 
   render() {
-    if (this.state.card.isOpen) {
-      return this.getOpenCardView(this.state.card);
+    if (this.props.card && this.props.card.isOpen) {
+      return this.getOpenCardView(this.props.card);
     }
     return this.getClosedCardView();
   }

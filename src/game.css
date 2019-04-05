@@ -35,5 +35,6 @@
 }
 
 .foundation {
+  width: 100%;
   display: flex;
 }

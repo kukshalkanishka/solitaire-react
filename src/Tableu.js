@@ -29,12 +29,16 @@ class Tableu {
       }
     }
   }
+
   removeCard(cardId) {
     let requiredPile = this.piles.find(pile =>
       pile.find(card => card.id == cardId)
     );
-    let cardIndex = requiredPile.findIndex(card => card.id == cardId);
-    return requiredPile.splice(cardIndex);
+    if (requiredPile) {
+      let cardIndex = requiredPile.findIndex(card => card.id == cardId);
+      return requiredPile.splice(cardIndex);
+    }
+    return [];
   }
 }
 

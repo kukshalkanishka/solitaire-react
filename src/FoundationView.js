@@ -1,21 +1,15 @@
 import React from "react";
+import { last } from "lodash";
 
 import "./game.css";
 import CardView from "./CardView";
 
 class FoundationView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      unwantedPile: this.props.unwantedPile
-    };
-  }
-
   render() {
     return (
       <div className="foundation">
-        <CardView card={{ isOpen: false }} />
-        <CardView card={{ isOpen: false }} />
+        <div className="card" onClick={this.props.openTopCard} />
+        <CardView card={this.props.openCard} />
       </div>
     );
   }
