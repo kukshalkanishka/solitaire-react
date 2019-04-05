@@ -9,7 +9,10 @@ class Card {
   }
 
   canPlayOnTopOf(card) {
-    return card.color != this.color && this.cardNum + 1 == card.cardNum;
+    if (card) {
+      return card.color != this.color && this.cardNum + 1 == card.cardNum;
+    }
+    return this.cardNum == 13;
   }
 
   setIsOpen() {

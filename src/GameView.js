@@ -1,21 +1,21 @@
 import React from "react";
-import { flattenDeep, last } from "lodash";
+import { last } from "lodash";
 
 import "./game.css";
 
-import Deck from "./Deck";
-import FoundationView from "./FoundationView";
+import Deck from "./models/Deck";
 import TableuView from "./TableuView";
+import FoundationLayer from "./FoundationLayer";
 
-class Game extends React.Component {
+class GameView extends React.Component {
   constructor(props) {
     super(props);
     this.deck = new Deck();
-    this.tableu = this.deck.getTableu();
     this.state = {
-      piles: this.tableu.getPiles(),
+      piles: this.deck.getPiles(),
       wastePile: this.deck.getWastePile(),
-      openPile: this.deck.getOpenPile()
+      openPile: this.deck.getOpenPile(),
+      foundations: this.deck.getFoundations()
     };
   }
 
@@ -30,7 +30,7 @@ class Game extends React.Component {
 
   updatePiles(draggedCardId, targetPileNum) {
     let removedCards = this.deck.removeCard(draggedCardId);
-    this.tableu.addCard(targetPileNum, removedCards);
+    this.deck.addCards(targetPileNum, removedCards);
 
     this.setState({ piles: this.state.piles });
   }
@@ -48,18 +48,19 @@ class Game extends React.Component {
   render() {
     return (
       <div className="game">
-        <FoundationView
+        <FoundationLayer
           deck={this.deck}
+          drop={this.drop.bind(this)}
           openTopCard={this.openTopCard.bind(this)}
           openCard={last(this.state.openPile)}
+          foundations={this.state.foundations}
         />
 
         <div className="piles">
           <TableuView
-            tableu={this.state.tableu}
             drop={this.drop.bind(this)}
             piles={this.state.piles}
-            setInitialOpenCards={this.tableu.setInitialOpenCards}
+            setInitialOpenCards={this.deck.setInitialOpenCards.bind(this.deck)}
           />
         </div>
       </div>
@@ -67,4 +68,4 @@ class Game extends React.Component {
   }
 }
 
-export default Game;
+export default GameView;

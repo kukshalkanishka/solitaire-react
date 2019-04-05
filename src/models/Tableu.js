@@ -1,3 +1,5 @@
+import { flattenDeep } from "lodash";
+
 class Tableu {
   constructor(pilesCards) {
     this.pilesCards = pilesCards;
@@ -12,7 +14,12 @@ class Tableu {
     return piles;
   }
 
-  addCard(pileNum, removedCards) {
+  getCard(cardId) {
+    let flatStack = flattenDeep(this.piles);
+    return flatStack.find(card => card.id == cardId);
+  }
+
+  addCards(pileNum, removedCards) {
     this.piles[pileNum] = this.piles[pileNum].concat(removedCards);
   }
 
