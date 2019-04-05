@@ -1,15 +1,14 @@
-class Piles {
-  constructor(deck) {
-    this.deck = deck;
+class Tableu {
+  constructor(pilesCards) {
+    this.pilesCards = pilesCards;
     this.piles = this.createInitialPiles();
   }
 
   createInitialPiles() {
     let piles = [];
     for (let pileNum = 0; pileNum < 7; pileNum++) {
-      piles.push(this.deck.splice(0, pileNum + 1));
+      piles.push(this.pilesCards.splice(0, pileNum + 1));
     }
-    this.wastePile = this.deck.slice();
     return piles;
   }
 
@@ -39,4 +38,4 @@ class Piles {
   }
 }
 
-export default Piles;
+export default Tableu;

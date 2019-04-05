@@ -1,14 +1,13 @@
 import React from "react";
-import { flattenDeep, remove } from "lodash";
-import Piles from "./Piles";
+import { flattenDeep } from "lodash";
 import CardView from "./CardView";
 import "./game.css";
 
-class PilesView extends React.Component {
+class TableuView extends React.Component {
   constructor(props) {
     super(props);
-    this.piles = new Piles(this.props.deck);
-    this.state = { piles: this.piles.getPiles() };
+    this.state = { piles: this.props.tableu.getPiles() };
+    this.tableu = this.props.tableu;
   }
 
   getCard(id) {
@@ -18,10 +17,10 @@ class PilesView extends React.Component {
   }
 
   updatePiles(draggedCardId, targetPileNum) {
-    let removedCards = this.piles.removeCard(draggedCardId);
-    this.piles.addCard(targetPileNum, removedCards);
+    let removedCards = this.tableu.removeCard(draggedCardId);
+    this.tableu.addCard(targetPileNum, removedCards);
 
-    this.setState({ piles: this.piles.getPiles() });
+    this.setState({ piles: this.state.piles });
   }
 
   drop(targetPileNum, ev) {
@@ -58,14 +57,14 @@ class PilesView extends React.Component {
   }
 
   render() {
-    this.piles.setInitialOpenCards();
+    this.tableu.setInitialOpenCards();
     return this.state.piles.map((pile, pileNum) => {
-      let cardsView = pile.map((card, cardNum) => {
-        return <CardView card={card} cardNum={cardNum} />;
+      let cardsView = pile.map(card => {
+        return <CardView card={card} />;
       });
       return this.getPileView(cardsView, pileNum);
     });
   }
 }
 
-export default PilesView;
+export default TableuView;

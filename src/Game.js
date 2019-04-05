@@ -1,28 +1,37 @@
 import React from "react";
+
 import "./game.css";
-import deckGenerator from "./deckGenerator";
-import { shuffle } from "lodash";
-import PilesView from "./PilesView";
+
+import Deck from "./Deck";
+import FoundationView from "./FoundationView";
+import TableuView from "./TableuView";
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.deck = shuffle(deckGenerator());
-    this.wastePile = this.deck.splice(0, 24);
+    this.deck = new Deck();
+    this.tableu = this.deck.getTableu();
   }
   render() {
     return (
-      //   <div>
-      //     <div>
-      //       hi
-      //       <div className="foundation" />
-      //     </div>
-      //       //tableu
-      <div className="piles">
-        <PilesView deck={this.deck} />
+      <div className="game">
+        <FoundationView wastePile={this.deck.wastePile} />
+        <div className="piles">
+          <TableuView tableu={this.tableu} />
+        </div>
       </div>
     );
   }
 }
 
 export default Game;
+
+{
+  /* //     </div>
+        <div>
+      //     <div>
+      //       hi
+      //       <div className="foundation" />
+      //     </div>
+      //       //tableu */
+}

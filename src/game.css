@@ -2,9 +2,9 @@
   width: 150px;
   height: 200px;
 
-  background: #f6f0e5;
+  margin-top: -120px;
 
-  position: absolute;
+  background: #f6f0e5;
 
   font-size: 220px;
 
@@ -21,11 +21,19 @@
   display: flex;
   justify-content: space-around;
   flex-direction: row;
+
+  margin-top: 150px;
 }
 
 .pile {
   display: flex;
   flex-direction: column;
+}
 
-  position: relative;
+.game {
+  margin-top: 150px;
+}
+
+.foundation {
+  display: flex;
 }
