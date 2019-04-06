@@ -39,7 +39,6 @@ class GameView extends React.Component {
 
   isCardPlayable(draggedCardId, targetPileNum) {
     let draggedCard = this.deck.getCard(draggedCardId);
-    console.log(draggedCard);
     return this.deck.isCardPlayable(draggedCard, targetPileNum);
   }
 

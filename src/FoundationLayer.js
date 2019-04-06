@@ -3,7 +3,6 @@ import { last } from "lodash";
 
 import "./game.css";
 import CardView from "./CardView";
-import Card from "./models/Card";
 
 class FoundationView extends React.Component {
   allowDrop(ev) {
