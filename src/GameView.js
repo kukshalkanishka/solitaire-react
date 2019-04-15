@@ -59,7 +59,7 @@ class GameView extends React.Component {
           openCard={last(this.state.openPile)}
           foundations={this.state.foundations}
         />
-
+        <hr />
         <div className="piles">
           <TableuView
             drop={this.drop.bind(this)}
